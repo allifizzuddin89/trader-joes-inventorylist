@@ -87,7 +87,41 @@ class Rev01Spider(scrapy.Spider):
     # response = requests.request("POST", url, headers=headers, data=payload)
 
     def start_requests(self):
-        for i in range(1,91):
+        # for i in range(1,134):
+        #     self.payload.update({"variables":{
+        #         "storeCode": "TJ",
+        #         "availability": "1",
+        #         "published": "1",
+        #         "categoryId": 2,
+        #         "currentPage": i,
+        #         "pageSize": 10
+        #     }})
+            
+        #     yield scrapy.Request(url=self.url, method='POST', headers=self.headers, body=json.dumps(self.payload), cb_kwargs={'iter':i},callback=self.parse)
+
+        self.payload.update({"variables":{
+            "storeCode": "TJ",
+            "availability": "1",
+            "published": "1",
+            "categoryId": 2,
+            "currentPage": 1,
+            "pageSize": 10
+        }})
+            
+        yield scrapy.Request(url=self.url, method='POST', headers=self.headers, body=json.dumps(self.payload), callback=self.paginate)
+        
+    def paginate(self,response):
+        raw_data = json.loads(response.body)
+        total_page = raw_data['data']['products']['pageInfo']['totalPages']
+        print('\n\n')
+        print('Total page')
+        pprint(total_page)
+        print('\n\n')
+        print('Total page type')
+        pprint(type(total_page))
+        print('\n\n')
+        
+        for i in range(1,total_page):
             self.payload.update({"variables":{
                 "storeCode": "TJ",
                 "availability": "1",
@@ -96,36 +130,134 @@ class Rev01Spider(scrapy.Spider):
                 "currentPage": i,
                 "pageSize": 10
             }})
-            print('\n')
-            print(i)
-            print('\n')
+            
             yield scrapy.Request(url=self.url, method='POST', headers=self.headers, body=json.dumps(self.payload), callback=self.parse)
-        # yield scrapy.Request(url=self.url, method='POST', headers=self.headers, body=json.dumps(self.payload), callback=self.parse)
-    
-    
-    def parse(self, response):
-        
-        # inspect_response(response, self)
-        
+
+    def parse(self, response):        
+        # inspect_response(response, self)        
         raw_data = json.loads(response.body)
-        # data = raw_data['data']['products']['items'][0]['item_title']
+        # data = raw_data['data']['products']['items'][j]['item_title']
         # print('\n\n')
         # pprint(data)
         # df =pd.DataFrame(data)
         # print('\n\n')
         # print(df)
-        item ={
-            'Item Name' : raw_data['data']['products']['items'][0]['item_title'],
-            'Main Category' : raw_data['data']['products']['items'][0]['category_hierarchy'][1]['name'],
-            'Sub Category' : raw_data['data']['products']['items'][0]['category_hierarchy'][2]['name'],
-            'Sub sub Category' : raw_data['data']['products']['items'][0]['category_hierarchy'][3]['name'],
-            'Price, '+ raw_data['data']['products']['items'][0]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][0]['price_range']['minimum_price']['final_price']['value'],
-            'Packaging size' : raw_data['data']['products']['items'][0]['sales_size'],
-            'Size Unit' : raw_data['data']['products']['items'][0]['sales_uom_description'],
-            # 'Packaging size' : raw_data['data']['products']['items'][0]['sales_size'],
-            'SKU' : raw_data['data']['products']['items'][0]['sku'],
 
-        }
-        yield item                
+        total_item = len(raw_data['data']['products']['items'])
 
-    
+        print('\n\n')
+        print('Total items:')
+        pprint(total_item)
+        print('\n\n')
+
+        # for j in range(0,total_item):
+        #     try:
+        #         item ={
+        #             'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+        #             'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name'],
+        #             'Sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name'],
+        #             'Sub sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][3]['name'],
+        #             'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+        #             'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+        #             'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+        #             # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+        #             'SKU' : raw_data['data']['products']['items'][j]['sku'],
+
+        #         }
+        #         yield item
+        #     except IndexError:
+        #         try:
+        #             print('\n')
+        #             print(iter)
+        #             print('\n')
+        #             item ={
+        #                 'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+        #                 'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name'],
+        #                 'Sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name'],
+        #                 'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+        #                 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+        #                 'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+        #                 # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+        #                 'SKU' : raw_data['data']['products']['items'][j]['sku'],
+
+        #             }
+        #             yield item
+        #         except :
+        #             print('\n')
+        #             print(iter)
+        #             print('\n')
+        #             item ={
+        #                 'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+        #                 'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][0]['name'],
+        #                 'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+        #                 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+        #                 'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+        #                 # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+        #                 'SKU' : raw_data['data']['products']['items'][j]['sku'],
+
+        #             }
+        #             yield item
+        
+    # def parse(self, response, iter):
+        
+    #     # inspect_response(response, self)
+        
+    #     raw_data = json.loads(response.body)
+    #     # data = raw_data['data']['products']['items'][j]['item_title']
+    #     # print('\n\n')
+    #     # pprint(data)
+    #     # df =pd.DataFrame(data)
+    #     # print('\n\n')
+    #     # print(df)
+
+    #     print('\n\n')
+    #     pprint(raw_data['data']['products']['pageInfo']['totalPages'])
+    #     print('\n\n')
+
+    #     for j in range(0,10):
+    #         try:
+    #             item ={
+    #                 'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+    #                 'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name'],
+    #                 'Sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name'],
+    #                 'Sub sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][3]['name'],
+    #                 'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+    #                 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                 'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+    #                 # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                 'SKU' : raw_data['data']['products']['items'][j]['sku'],
+
+    #             }
+    #             yield item
+    #         except IndexError:
+    #             try:
+    #                 print('\n')
+    #                 print(iter)
+    #                 print('\n')
+    #                 item ={
+    #                     'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+    #                     'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name'],
+    #                     'Sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name'],
+    #                     'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+    #                     'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                     'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+    #                     # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                     'SKU' : raw_data['data']['products']['items'][j]['sku'],
+
+    #                 }
+    #                 yield item
+    #             except :
+    #                 print('\n')
+    #                 print(iter)
+    #                 print('\n')
+    #                 item ={
+    #                     'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+    #                     'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][0]['name'],
+    #                     'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+    #                     'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                     'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+    #                     # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                     'SKU' : raw_data['data']['products']['items'][j]['sku'],
+
+    #                 }
+    #                 yield item
