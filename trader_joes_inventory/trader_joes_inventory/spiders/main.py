@@ -1,7 +1,15 @@
+# has to add the path manually since no item module found error
+# not the most elegant way to add path but compatible with other IDE
+import sys
+sys.path.append("trader_joes_inventory/trader_joes_inventory/")
+# from pprint import pprint
+# pprint(sys.path)
+
 import scrapy
 from scrapy.shell import inspect_response
 import json
 from scrapy import Request
+from items import TraderJoesInventoryItem
 
 
 class MainSpider(scrapy.Spider):
@@ -71,44 +79,81 @@ class MainSpider(scrapy.Spider):
             
             yield scrapy.Request(url=self.url, method='POST', headers=self.headers, body=json.dumps(self.payload), callback=self.parse)
     
+    # def parse(self, response):
+    #     raw_data = json.loads(response.body)
+    #     total_item = len(raw_data['data']['products']['items'])
+    #     for j in range(0,total_item):
+    #         try:
+    #             item ={
+    #                 'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+    #                 'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name'],
+    #                 'Sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name'],
+    #                 'Sub sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][3]['name'],
+    #                 'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+    #                 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                 'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+    #                 # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                 'SKU' : raw_data['data']['products']['items'][j]['sku'],
+    #             }
+    #             yield item
+    #         except IndexError:
+    #             try:                    
+    #                 item ={
+    #                     'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+    #                     'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name'],
+    #                     'Sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name'],
+    #                     'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+    #                     'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                     'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+    #                     # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                     'SKU' : raw_data['data']['products']['items'][j]['sku'],
+    #                 }
+    #                 yield item
+    #             except :                    
+    #                 item ={
+    #                     'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
+    #                     'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][0]['name'],
+    #                     'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
+    #                     'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                     'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
+    #                     # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
+    #                     'SKU' : raw_data['data']['products']['items'][j]['sku'],
+    #                 }
+    #                 yield item
+
     def parse(self, response):
         raw_data = json.loads(response.body)
         total_item = len(raw_data['data']['products']['items'])
+        inventory = TraderJoesInventoryItem()
         for j in range(0,total_item):
             try:
-                item ={
-                    'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
-                    'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name'],
-                    'Sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name'],
-                    'Sub sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][3]['name'],
-                    'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
-                    'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
-                    'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
-                    # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
-                    'SKU' : raw_data['data']['products']['items'][j]['sku'],
-                }
-                yield item
+                inventory['Item_Name'] : raw_data['data']['products']['items'][j]['item_title']
+                inventory['Main_Category'] : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name']
+                inventory['Sub_Category'] : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name']
+                inventory['Sub_Sub_Category'] : raw_data['data']['products']['items'][j]['category_hierarchy'][3]['name']
+                inventory['Price']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value']
+                inventory['Currency'] : raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']
+                inventory['Packaging_Size'] : raw_data['data']['products']['items'][j]['sales_size']
+                inventory['Size_Unit'] : raw_data['data']['products']['items'][j]['sales_uom_description']
+                inventory['SKU'] : raw_data['data']['products']['items'][j]['sku']
+                yield inventory
             except IndexError:
                 try:                    
-                    item ={
-                        'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
-                        'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name'],
-                        'Sub Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][2]['name'],
-                        'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
-                        'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
-                        'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
-                        # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
-                        'SKU' : raw_data['data']['products']['items'][j]['sku'],
-                    }
-                    yield item
+                    inventory['Item_Name'] : raw_data['data']['products']['items'][j]['item_title']
+                    inventory['Main_Category'] : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name']
+                    inventory['Sub_Sub_Category'] : raw_data['data']['products']['items'][j]['category_hierarchy'][3]['name']
+                    inventory['Price']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value']
+                    inventory['Currency'] : raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']
+                    inventory['Packaging_Size'] : raw_data['data']['products']['items'][j]['sales_size']
+                    inventory['Size_Unit'] : raw_data['data']['products']['items'][j]['sales_uom_description']
+                    inventory['SKU'] : raw_data['data']['products']['items'][j]['sku']
+                    yield inventory
                 except :                    
-                    item ={
-                        'Item Name' : raw_data['data']['products']['items'][j]['item_title'],
-                        'Main Category' : raw_data['data']['products']['items'][j]['category_hierarchy'][0]['name'],
-                        'Price, '+ raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value'],
-                        'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
-                        'Size Unit' : raw_data['data']['products']['items'][j]['sales_uom_description'],
-                        # 'Packaging size' : raw_data['data']['products']['items'][j]['sales_size'],
-                        'SKU' : raw_data['data']['products']['items'][j]['sku'],
-                    }
-                    yield item
+                    inventory['Item_Name'] : raw_data['data']['products']['items'][j]['item_title']
+                    inventory['Main_Category'] : raw_data['data']['products']['items'][j]['category_hierarchy'][1]['name']
+                    inventory['Price']: raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['value']
+                    inventory['Currency'] : raw_data['data']['products']['items'][j]['price_range']['minimum_price']['final_price']['currency']
+                    inventory['Packaging_Size'] : raw_data['data']['products']['items'][j]['sales_size']
+                    inventory['Size_Unit'] : raw_data['data']['products']['items'][j]['sales_uom_description']
+                    inventory['SKU'] : raw_data['data']['products']['items'][j]['sku']
+                    yield inventory
