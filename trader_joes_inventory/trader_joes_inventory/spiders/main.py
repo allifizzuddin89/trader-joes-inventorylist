@@ -1,9 +1,12 @@
 # has to add the path manually since no item module found error
 # not the most elegant way to add path but compatible with other IDE
+import os
 import sys
-sys.path.append("trader_joes_inventory/trader_joes_inventory/")
-# from pprint import pprint
-# pprint(sys.path)
+# sys.path.append("trader_joes_inventory/trader_joes_inventory/")
+sys.path.append(os.getcwd()+"/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
+from pprint import pprint
+pprint(sys.path)
+# print(os.getcwd())
 
 import scrapy
 from scrapy.shell import inspect_response
