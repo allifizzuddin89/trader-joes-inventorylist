@@ -1,33 +1,23 @@
-# has to add the path manually since no item module found error
-# not the most elegant way to add path but compatible with other IDE
+import scrapy
 import os
 import sys
-sys.path.insert(0,"/home/allifizzuddin/Documents/Freelance_ job/Job_2023/trader-joes-list/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
-# sys.path.append("trader_joes_inventory/trader_joes_inventory/")
-# sys.path.append(os.getcwd()+"/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
-# sys.path.append(os.getcwd())
-# from pprint import pprint
-# print('\nBefore add dir :\n')
-# pprint(sys.path)
 
-# ROOT_DIR = os.path.abspath(os.curdir)
-# print(os.getcwd())
-# # print('\nROOT : {}'.format(ROOT_DIR))
+ROOT_DIR = os.path.abspath(os.curdir)
+
 # sys.path.append(ROOT_DIR)
 # sys.path.append(ROOT_DIR+"/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
-# print('\nAfter add dir :\n')
-# pprint(sys.path)
+sys.path.insert(0,"/home/allifizzuddin/Documents/Freelance_ job/Job_2023/trader-joes-list/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
+
 import scrapy
 from scrapy.shell import inspect_response
 import json
 from scrapy import Request
 from items import TraderJoesInventoryItem
 
-
-class MainSpider(scrapy.Spider):
-    name = "main"
-    # allowed_domains = ["www.traderjoes.com"]
-    # start_urls = ["http://www.traderjoes.com/"]
+class Main1PySpider(scrapy.Spider):
+    name = "main_1.py"
+    # allowed_domains = ["x"]
+    # start_urls = ["http://x/"]
 
     url = 'https://www.traderjoes.com/api/graphql'
 

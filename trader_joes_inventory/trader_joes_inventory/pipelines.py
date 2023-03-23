@@ -12,7 +12,7 @@ import mysql.connector
 
 class TraderJoesInventoryPipeline:
         def process_item(self, item, spider):
-                print('PIPELINE : {}'.format(item['Item_Name']))
+                # print('PIPELINE : {}'.format(item['Item_Name']))
                 return item
     # # Configure database pipeline inside _init_
     # def __init__(self):
@@ -21,6 +21,7 @@ class TraderJoesInventoryPipeline:
     #         user = 'traderjoes',
     #         password = '1234567890',
     #         database = 'traderjoesinventory'
+            # port = '3306'
         # )
 
         # ## Create cursor, used to execute commands
@@ -93,3 +94,7 @@ class TraderJoesInventoryPipeline:
     #     ## Close cursor & connection to database 
     #     self.cur.close()
     #     self.conn.close()
+
+# class SavingToMysqlPipeline(self,object):
+#         def __init__(self):
+#         self.create_connection()
