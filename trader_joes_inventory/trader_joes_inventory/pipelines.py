@@ -15,6 +15,11 @@ class SavingToMysqlPipeline(object):
     def __init__(self):
         self.create_connection()
     
+    # please setup your own MYSQL database
+    # below details such as host, user, password, database, port
+    # definitely not working on your machine
+    # please refer https://dev.mysql.com/doc/mysql-getting-started/en/
+    # to setup your own MYSQL database, table
     def create_connection(self):
         self.connection =mysql.connector.connect(
             host = 'localhost',
