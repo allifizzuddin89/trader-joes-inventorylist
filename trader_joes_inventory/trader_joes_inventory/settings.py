@@ -61,10 +61,17 @@ ROBOTSTXT_OBEY = False
 #    "scrapy.extensions.telnet.TelnetConsole": None,
 #}
 
+# make sure settings can find the pipeline dir
+import os
+import sys
+ROOT_DIR = os.path.abspath(os.curdir)
+sys.path.insert(0,ROOT_DIR+"/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
+
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "trader_joes_inventory.pipelines.TraderJoesInventoryPipeline": 300,
+#    "trader_joes_inventory.pipelines.TraderJoesInventoryPipeline": 300,
+   "trader_joes_inventory.pipelines.SavingToMysqlPipeline" : 250
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

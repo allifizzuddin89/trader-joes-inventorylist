@@ -3,6 +3,7 @@ import requests
 import json
 from scrapy.shell import inspect_response
 import pandas as pd
+from pprint import pprint
 import os
 import sys
 
