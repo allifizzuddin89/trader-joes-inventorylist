@@ -34,7 +34,8 @@ class TraderJoesInventoryItem(scrapy.Item):
     Size_Unit = scrapy.Field()
     SKU = scrapy.Field()
 
-    ## If using css or xpath selector and needs cleaning :
+    ## If using css or xpath selector and needs cleaning
+    ## In this case, we use api request, so mehhhhh ignore below
     # Item_Name = scrapy.Field(input_processor=MapCompose(remove_tags), output_processor = TakeFirst())
     # Main_Category = scrapy.Field(input_processor=MapCompose(remove_tags), output_processor = TakeFirst())
     # Sub_Category = scrapy.Field(input_processor=MapCompose(remove_tags), output_processor = TakeFirst())
