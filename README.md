@@ -8,6 +8,8 @@
 - MySQL setup in pipelines.py.
 - Item/itemloader setup in items.py
 - Feedexporter setup in settings.py
+- You may view the scraped data in the generated csv file in directory /trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/spiders/data
+- Also the data is available inside MySQL database. My preferred choice tool is Dbeaver, you might use MySQL Workbench or simply via terminal. [See instruction via terminal](https://dev.mysql.com/doc/mysql-getting-started/en/)
 
 ## Run
 - The working directory is trader-joes-inventorylist/tree/main/trader_joes_inventory/trader_joes_inventory/spiders
