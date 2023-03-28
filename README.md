@@ -33,7 +33,7 @@
 ```bash
   conda activate scraping_env
 ```
-- Setup MySql Database, please us your own details; host, user, password, database, table. See link below for setup instruction
+- Setup MySql Database, please us your own details; host, user, password, database, table. Please see the link for setup instruction
 [MySQL Setup Instruction](https://dev.mysql.com/doc/mysql-getting-started/en/)
  - Run the spider
  ```bash
@@ -47,7 +47,7 @@
   1. Refresh the payload and headers using Postman or any API Tool (if any) OR
   2. Using rotating proxy, google it!
   3. Using the new curl in the Postman or any API Tool of your choice.
-  4. Items module not found error might happen, please see main.py for further instruction. [main.py](https://github.com/allifizzuddin89/trader-joes-inventorylist/tree/main/trader_joes_inventory/trader_joes_inventory/spiders/)
+  4. Items module not found error might happen, please see main.py for further instruction. [main.py](https://github.com/allifizzuddin89/trader-joes-inventorylist/blob/main/trader_joes_inventory/trader_joes_inventory/spiders/main.py)
   
 ## DISCLAIMER
 - This work only meant for educational, research and proof of work purpose only. 
