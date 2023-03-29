@@ -12,7 +12,7 @@
 - Also the data is available inside MySQL database. My preferred choice tool is Dbeaver, you might use MySQL Workbench or simply via terminal. [See instruction via terminal](https://dev.mysql.com/doc/mysql-getting-started/en/)
 
 # Result
-- See the generated result in csv file in [CSV FILE]('https://github.com/allifizzuddin89/trader-joes-inventorylist/blob/main/trader_joes_inventory/trader_joes_inventory/spiders/data/main/main_2023-03-11T19-42-24.csv')
+- See the generated result in csv file in [CSV FILE](https://github.com/allifizzuddin89/trader-joes-inventorylist/blob/main/trader_joes_inventory/trader_joes_inventory/spiders/data/main/main_2023-03-11T19-42-24.csv)
 
 ## Run
 - The working directory is trader-joes-inventorylist/tree/main/trader_joes_inventory/trader_joes_inventory/spiders
