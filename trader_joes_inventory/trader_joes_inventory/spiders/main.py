@@ -17,12 +17,6 @@ from scrapy.loader import ItemLoader
 # if has no module items error please remarks ROOT_DIR and sys.path.insert below
 # OR pprint(sys.path) check if the module items directory is exist
 # then fix accordingly
-# ROOT_DIR = os.path.abspath(os.curdir)
-# sys.path.insert(0,ROOT_DIR+"/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
-# /mnt/0b6522c1-7577-423c-b7ec-a2a47184e34a/Documents/Freelance_ job/Job_2023/trader-joes-list/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/items.py
-# import items 
-# pprint(sys.path)
-# print(ROOT_DIR)
 
 # current directory
 path = os.getcwd()
