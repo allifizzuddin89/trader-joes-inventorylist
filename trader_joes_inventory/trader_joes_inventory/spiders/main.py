@@ -2,6 +2,7 @@ import scrapy
 import requests
 import json
 from scrapy.shell import inspect_response
+from pprint import pprint
 import os
 import sys
 
@@ -16,12 +17,23 @@ from scrapy.loader import ItemLoader
 # if has no module items error please remarks ROOT_DIR and sys.path.insert below
 # OR pprint(sys.path) check if the module items directory is exist
 # then fix accordingly
-ROOT_DIR = os.path.abspath(os.curdir)
-sys.path.insert(0,ROOT_DIR+"/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
+# ROOT_DIR = os.path.abspath(os.curdir)
+# sys.path.insert(0,ROOT_DIR+"/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/")
+# /mnt/0b6522c1-7577-423c-b7ec-a2a47184e34a/Documents/Freelance_ job/Job_2023/trader-joes-list/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/items.py
 # import items 
-from items import TraderJoesInventoryItem
-from pprint import pprint
+# pprint(sys.path)
+# print(ROOT_DIR)
+
+# current directory
+path = os.getcwd()
+print("\nCurrent Directory\n", path)
+# parent of current directory
+print(os.path.abspath(os.path.join(path, os.pardir)))
+# insert current parent directory into sys.path
+sys.path.insert(0,os.path.abspath(os.path.join(path, os.pardir)))
 pprint(sys.path)
+from items import TraderJoesInventoryItem
+
 
 
 class MainSpider(scrapy.Spider):
