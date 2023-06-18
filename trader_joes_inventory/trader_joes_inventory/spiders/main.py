@@ -5,6 +5,7 @@ from scrapy.shell import inspect_response
 from pprint import pprint
 import os
 import sys
+from sys import path
 
 # log the output
 from scrapy.utils.log import configure_logging
@@ -14,20 +15,18 @@ import logging
 from scrapy.loader import ItemLoader
 
 # manually extend path for items.py
-# if has no module items error please remarks ROOT_DIR and sys.path.insert below
-# OR pprint(sys.path) check if the module items directory is exist
-# then fix accordingly
-
 # current directory
-path = os.getcwd()
-print("\nCurrent Directory\n", path)
+path_1 = os.getcwd()
+print("\nCurrent Directory\n {}\n".format(path_1))
 # parent of current directory
-print(os.path.abspath(os.path.join(path, os.pardir)))
+print('Parent of current directory : \n{}\n'.format(os.path.abspath(os.path.join(path_1, os.pardir))))
 # insert current parent directory into sys.path
-sys.path.insert(0,os.path.abspath(os.path.join(path, os.pardir)))
+sys.path.insert(0,os.path.abspath(os.path.join(path_1, os.pardir)))
+sys.path.insert(0,path_1)
+path.append(path_1+'/trader-joes-inventorylist/trader_joes_inventory/trader_joes_inventory/')
 pprint(sys.path)
-from items import TraderJoesInventoryItem
 
+from items import TraderJoesInventoryItem
 
 
 class MainSpider(scrapy.Spider):
